@@ -1,0 +1,62 @@
+﻿@model List<StockSalesProject.Entity.Concrete.Product>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12">
+    @Html.ActionLink("Ürün Ekle", "AddProduct", "Product", null, new { @class = "btn btn-dark" })
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Ürün Adı</th>
+                <th scope="col">Kategori</th>
+                <th scope="col">Stok Miktarı</th>
+                <th scope="col">Ürün Fiyatı</th>
+                <th scope="col">Tedarikçi</th>
+                <th scope="col">Bulunduğu Depo</th>
+                <th scope="col">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (Product product in Model)
+            {
+                <tr>
+                    <td>@product.ProductId</td>
+                    <td>@product.ProductName</td>
+                    @foreach (Category category in ViewBag.Category)
+                    {
+                        if (category.CategoryId == product.CategoryId)
+                        {
+
+                            <td>@category.CategoryName</td>
+                        }
+                    }
+                    <td>@product.Stock</td>
+                    <td>@product.UnitPrice</td>
+                    @foreach (Supplier supplier in ViewBag.Supplier)
+                    {
+                        if (supplier.SupplierId == product.SupplierId)
+                        {
+                            <td>@supplier.SupplierCompanyName</td>
+                        }
+                    }
+
+                    @foreach (Storeroom storeroom in ViewBag.Storeroom)
+                    {
+                        if (storeroom.StoreroomId == product.StoreroomId)
+                        {
+                            <td>@storeroom.StoreroomName</td>
+                        }
+                    }
+                    <td>
+                        @Html.ActionLink("Kaldır", "RemoveProduct", new { productId = product.ProductId }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Güncelle", "UpdateProduct", new { productId = product.ProductId }, new { @class = "btn btn-warning" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
